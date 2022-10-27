@@ -11,13 +11,11 @@ public class Main {
         products.put("Масло", 153);
         products.put("Колбаса", 211);
         products.put("Пирожок", 45);
-// Логику добавления продуктов в ассортимент необходимо вынести в отдельный класс. Иначе нарушены Single responsibility 
-// и Open-closed принципы. 
+
         System.out.println("В МАГАЗИНЕ В НАЛИЧИИ");
         for (Map.Entry<String, Integer> productAndPrice : products.entrySet()) {
             System.out.println(productAndPrice.getKey() + " за " + productAndPrice.getValue() + " руб./шт.");
-        } // Логику вывода на печать ассортимента также надо перенести в отдельный класс, где наполняется ассортимент. 
-        // Иначе нарушен Single responsibility принцип. 
+        } 
 
         System.out.println("Введите два слова: название товара и количество. Или end");
         Scanner scanner = new Scanner(System.in);
@@ -32,8 +30,7 @@ public class Main {
         }
         long sum = purchase.sum(products);
         System.out.println("ИТОГО: " + sum);
-        // Логику вывода содержимого корзины можно перенести в класс Purchase для соблюдения 
-        // Single responsibility principle. 
+
     }
 }
 
@@ -45,7 +42,8 @@ import java.util.Map;
 public class Purchase {
     protected String title;
     protected int count;
-    protected Purchase[] purchases = new Purchase[4]; // 4 - Magic Number. При изменении кол-ва продуктов в магазине 
+    protected Purchase[] purchases = new Purchase[4]; // 1) Согласно принципу Single responsibility, создание корзины 
+    // необходимо вынести в отдельный класс. 2) 4 - Magic Number. При изменении кол-ва продуктов в магазине 
     // это число неудобно искать в коде. Лучше вынести в качестве константы при названии полей. 
 
     public Purchase(String title, int count) {
@@ -67,7 +65,7 @@ public class Purchase {
                 return;
             }
         }
-    }
+    } // Согласно принципу Single responsibility, метод добавления товаров в корзину необходимо вынести в отдельный класс.
 
     public long sum(Map<String, Integer> prices) {
         long sum = 0;
@@ -79,7 +77,7 @@ public class Purchase {
             sum += purchase.count * prices.get(purchase.title);
         }
         return sum;
-    }
+    } // Согласно принципу Single responsibility, метод печати содержимого корзины необходимо вынести в отдельный класс.
 }
 
 ```
